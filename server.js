@@ -65,17 +65,13 @@ app.get("/scrape", function(req, res) {
       result.title = $(this).children("a").text();
       result.link = $(this).children("a").attr("href");
 
-      // Using our Article model, create a new entry
-      // This effectively passes the result object to the entry (and the title and link)
       var entry = new Article(result);
 
       // Now, save that entry to the db
       entry.save(function(err, doc) {
-        // Log any errors
         if (err) {
           console.log(err);
         }
-        // Or log the doc
         else {
           console.log(doc);
         }
@@ -83,7 +79,6 @@ app.get("/scrape", function(req, res) {
 
     });
   });
-  // Tell the browser that we finished scraping the text
   res.send("Scrape Complete");
 });
 
@@ -104,13 +99,11 @@ app.get("/articles", function(req, res) {
 
 // Grab an article by it's ObjectId
 app.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   Article.findOne({ "_id": req.params.id })
-  // ..and populate all of the comments associated with it
+  // populate all of the comments associated with it
   .populate("comm")
   // now, execute our query
   .exec(function(error, doc) {
-    // Log any errors
     if (error) {
       console.log(error);
     }
@@ -133,13 +126,11 @@ app.post("/articles/:id", function(req, res) {
     if (error) {
       console.log(error);
     }
-    // Otherwise
     else {
       // Use the article id to find and update it's comment
       Article.findOneAndUpdate({ "_id": req.params.id }, { "comm": doc._id })
       // Execute the above query
       .exec(function(err, doc) {
-        // Log any errors
         if (err) {
           console.log(err);
         }
