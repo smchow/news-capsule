@@ -48,11 +48,10 @@ db.once("open", function() {
 // Routes
 // ======
 
-// A GET request to scrape the echojs website
+// A GET request to scrape the website
 app.get("/scrape", function(req, res) {
-  // First, we grab the body of the html with request
+  // getting  body of the html with request
   request("http://www.reuters.com/news/entertainment", function(error, response, html) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(html);
     // Now, we grab every h2 within an article tag, and do the following:
     console.log("Here");
